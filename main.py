@@ -1,16 +1,30 @@
-# This is a sample Python script.
-
-# Press Maj+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+import Functions as F
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def main():
+    while True:
+        choice = input("Which FA do you want to use? (or 'exit'): ")
+        if choice.lower() == 'exit':
+            break
+
+        # Ensure ID format matches the file (e.g., '5' becomes '05')
+        formatted_id = choice.zfill(2)
+        fa = F.read_automaton_from_file("Automatas.txt", formatted_id)
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+        print(f"\n--- Analysis of FA #{formatted_id} ---")
+        if fa:
+            # Stage 2: Display information
+            is_det = fa.is_deterministic()
+            is_comp = fa.is_complete()
+            is_std = fa.is_standard()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+
+        else:
+            print("Automaton not found.")
+
+    return
+
+
+main()
