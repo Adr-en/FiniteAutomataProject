@@ -14,7 +14,6 @@ def main():
 
         print(f"\n--- Analysis of FA #{formatted_id} ---")
         if fa:
-            # Stage 2: Display information
             is_det = fa.is_deterministic()
             is_comp = fa.is_complete()
             is_std = fa.is_standard()
