@@ -1,5 +1,5 @@
 
-
+#start class
 class Automaton:
     def __init__(self, alphabet_size, nb_states, initial_states, terminal_states, transitions):
         self.alphabet_size = alphabet_size  # Number of symbols in the alphabet
@@ -73,7 +73,12 @@ class Automaton:
 
         print("The automaton is standard.")
         return True
+# end class
 
+
+
+
+# start functions
 
 def read_automaton_from_file(filename, target_id):
     """
@@ -134,3 +139,38 @@ def read_automaton_from_file(filename, target_id):
         transitions[(src, sym)].append(tgt)
 
     return Automaton(alphabet_size, nb_states, initial_states, terminal_states, transitions)
+
+
+'''
+def standardization(automaton): #function to standardize an automaton
+    trigger = 0
+    new_data_entry_state = ''
+    new_entry_point = []
+    if len(automaton.initial_states) == 1 or len(automaton.terminal_states) == 1: #checks if the automaton has 1 entry state
+        trigger = 0
+    else :
+        trigger = 1
+        for n in automaton.initial_states :
+            new_data_entry_state += str(n)
+        new_entry_point.append(new_data_entry_state)
+
+    for entry in automaton.initial_states: # checks for every entry states
+        for state in automaton.transitions.values(): # if tere is a state that has this entry as a target
+            if entry in state: # if the entry is a target then the automaton needs to be determinized
+                trigger = 1
+
+        if trigger == 0:
+            return True
+    for entry in automaton.terminal_states: 
+        for state in automaton.transitions.keys():
+            for n in range(len(automaton.transitions[state])):
+                for entry in automaton.transitions[state][n]:
+                    if entry in state:
+                        automaton.transitions[state][n].remove(entry)
+                        automaton.transitions[state][n].append(new_data_entry_state)
+    
+'''
+
+
+
+#end functions
