@@ -141,35 +141,52 @@ def read_automaton_from_file(filename, target_id):
     return Automaton(alphabet_size, nb_states, initial_states, terminal_states, transitions)
 
 
-'''
-def standardization(automaton): #function to standardize an automaton
-    trigger = 0
-    new_data_entry_state = ''
-    new_entry_point = []
-    if len(automaton.initial_states) == 1 or len(automaton.terminal_states) == 1: #checks if the automaton has 1 entry state
-        trigger = 0
-    else :
-        trigger = 1
-        for n in automaton.initial_states :
-            new_data_entry_state += str(n)
-        new_entry_point.append(new_data_entry_state)
+def standardize(automaton):
+    #Check if it's already standard
+    is_already_standard = True
+    if len(automaton.initial_states) != 1: #case where there is multiple entry state
+        is_already_standard = False
+    else:
+        # Check if any transition points to the single initial state
+        initial_state = list(automaton.initial_states)[0]
+        for source in automaton.transitions:
+            for label in automaton.transitions[source]:
+                if initial_state in automaton.transitions[source][label]:
+                    is_already_standard = False
+                    break
 
-    for entry in automaton.initial_states: # checks for every entry states
-        for state in automaton.transitions.values(): # if tere is a state that has this entry as a target
-            if entry in state: # if the entry is a target then the automaton needs to be determinized
-                trigger = 1
+    if is_already_standard:
+        return automaton  # No changes needed
 
-        if trigger == 0:
-            return True
-    for entry in automaton.terminal_states: 
-        for state in automaton.transitions.keys():
-            for n in range(len(automaton.transitions[state])):
-                for entry in automaton.transitions[state][n]:
-                    if entry in state:
-                        automaton.transitions[state][n].remove(entry)
-                        automaton.transitions[state][n].append(new_data_entry_state)
+    # Create a new unique initial state (e.g., 'S') that regroups every initial states
+    new_start = "S"
+
+    # Inherit transitions from all old initial states
+    # If old initial states had: q0 --a--> q1, then new state gets: S --a--> q1
+    new_transitions = {}
+    for init_state in automaton.initial_states:
+        if init_state in automaton.transitions:
+            for label, targets in automaton.transitions[init_state].items():
+                if label not in new_transitions:
+                    new_transitions[label] = set()
+                new_transitions[label].update(targets)
+
+    # Add these transitions to the automaton for the new state
+    automaton.transitions[new_start] = new_transitions
+
+    # Handle terminal status
+    # If any original initial state was terminal, the new start state is also terminal
+    for init_state in automaton.initial_states:
+        if init_state in automaton.terminal_states:
+            automaton.terminal_states.add(new_start)
+            break
+
+    # Update initial states to ONLY be the new start state
+    automaton.initial_states = {new_start}
+
+    return automaton
     
-'''
+
 
 
 
