@@ -73,6 +73,96 @@ class Automaton:
 
         print("The automaton is standard.")
         return True
+
+    def determinize_and_complete(self):
+
+        if self.is_deterministic():
+            print("Error : Automaton is already deterministic.")
+            return self
+
+        # 1. Creation of the new initial state
+        initial_labels = self.initial_states
+        initial_labels.sort()           #to prevent 1-3 != 3-1
+
+        start_label = ""
+        for i in range(len(initial_labels)):
+            start_label += str(initial_labels[i])
+            if i < len(initial_labels) - 1:
+                start_label += "-"
+
+        # Structure of the new automaton
+        new_states_list = [start_label]  # each time we see a new state we put it in this list
+        new_states_composition = {start_label: initial_labels} # aggregation of labels to form a unique state : list of the corresponding labels constituing the new state
+        new_transitions = {}
+        new_terminals = []
+
+        # 2. Main loop to create the transitions
+        idx = 0
+        while idx < len(new_states_list):
+            current_label = new_states_list[idx]
+            current_composition = new_states_composition[current_label]
+            idx += 1
+
+            for symbol in self.alphabet:
+                targets_found = []      #reinitialise the list
+
+                # For each original state we search for their targets and we deduce the new target for the new state
+                for state in current_composition:
+                    if (state, symbol) in self.transitions:
+                        potential_targets = self.transitions[(state, symbol)]
+
+                        for t in potential_targets:
+                            if t not in targets_found:
+                                targets_found.append(t)
+
+                # Sorting of the new target
+                targets_found.sort()
+
+                # Completing the table with the bin state P
+                if len(targets_found) == 0:
+                    target_label = "P"
+
+                #Creating the new state used as target
+                else:
+                    target_label = ""
+                    for i in range(len(targets_found)):
+                        target_label += str(targets_found[i])
+                        if i < len(targets_found) - 1:
+                            target_label += "-"
+
+                # Saving the new transition
+                new_transitions[(current_label, symbol)] = [target_label]
+
+                # If it's a new state we add it in the new state list
+                if target_label not in new_states_list:
+                    new_states_list.append(target_label)
+                    new_states_composition[target_label] = targets_found
+
+        # 3. Identification of a new state
+        for label in new_states_list:
+            composition = new_states_composition[label]
+            is_terminal = False
+            for s in composition:
+                if s in self.terminal_states:
+                    is_terminal = True
+                    break
+            if is_terminal:
+                new_terminals.append(label)
+
+        # 4. Creation of the new automaton
+        new_automaton = Automaton(
+            self.alphabet_size,
+            len(new_states_list),
+            [start_label],
+            new_terminals,
+            new_transitions
+        )
+        # Si besoin de récuperer les states il faudra rajouter un attribut new_states_composition
+        return new_automaton
+
+
+
+
 # end class
 
 
