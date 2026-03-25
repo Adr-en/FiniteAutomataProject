@@ -75,6 +75,15 @@ class Automaton:
         return True
 
     def determinize_and_complete(self):
+        """ The goal is to create a deterministic and complete version of a given automaton.
+        For this we first check if it is deterministic.
+        After this we create the initial state.
+        Then we create all new states and transitions necessary for it to be deterinistic.
+        We complete it and specify which states are terminal states.
+        And finally we create the new Automaton and return it.
+
+        Entry : Automaton
+        Exit : Automaton"""
 
         if self.is_deterministic():
             print("Error : Automaton is already deterministic.")
