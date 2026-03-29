@@ -301,7 +301,7 @@ def display_Automatoon(FA):
         if i in FA.initial_states: prefix += "->"
         if i in FA.terminal_states: prefix += "<-"
 
-        # On aligne le début de ligne sur 8 caractères
+
         print(f"{prefix:<8}", end="")
         print(f"{str(i):<8}", end="")
 
@@ -309,10 +309,10 @@ def display_Automatoon(FA):
             sym = alphabet_liste[j]
             targets = FA.transitions.get((i, sym), [])
 
-            # On prépare le texte de la cellule
+            #We prepare the text of the cell
             cell = ", ".join(map(str, targets)) if targets else "--"
 
-            # On l'affiche avec la largeur fixe de 10
+            # We print it
             print(f"{cell:<{col_width}}", end="")
 
         print()
