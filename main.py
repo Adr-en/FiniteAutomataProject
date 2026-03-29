@@ -23,9 +23,6 @@ def main():
             print("Automaton not found.")
 
 
-
-    F.read_automaton_from_file("Automatas.txt", 40).determinize_and_complete().display_complete_deterministic_automaton()
-
     return
 
 
