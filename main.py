@@ -4,6 +4,7 @@ from Functions import display_Automatoon
 
 #test
 def main():
+
     while True:
         choice = input("Which FA do you want to use? (or 'exit'): ")
         if choice.lower() == 'exit':
@@ -22,10 +23,9 @@ def main():
             is_comp = fa.is_complete()
             is_std = fa.is_standard()
 
-
-
         else:
             print("Automaton not found.")
+
 
     return
 

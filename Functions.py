@@ -38,14 +38,17 @@ class Automaton:
         return True
 
     def is_complete(self):
-        """
-        A deterministic FA is complete if every state has exactly
-        one outgoing transition for every symbol in the alphabet.
-        Entry : Object of type Automaton
-        Exit : Boolean
-        """
+        # On récupère la liste de tous les états réellement présents dans l'automate
+        # (ceux qui ont des transitions sortantes ou qui sont définis à la création)
+        all_states = set()
+        for state_label, _ in self.transitions.keys():
+            all_states.add(state_label)
 
-        for state in range(self.nb_states):
+        # On vérifie aussi les états initiaux et terminaux au cas où ils n'auraient pas de transitions
+        all_states.update(self.initial_states)
+        all_states.update(self.terminal_states)
+
+        for state in all_states:
             for symbol in self.alphabet:
                 if (state, symbol) not in self.transitions or not self.transitions[(state, symbol)]:
                     print(f"Not complete: state {state} lacks a transition for '{symbol}'.")
@@ -174,6 +177,48 @@ class Automaton:
         # Si besoin de récuperer les states il faudra rajouter un attribut new_states_composition
         return new_automaton
 
+
+    def display_complete_deterministic_automaton(self):
+            """
+            Displays the CDFA and explicitly shows the composition of the states
+            in terms of the original automaton states.
+            Entry : Automaton
+            Exit : None
+            """
+            col_width = 15
+
+            print("\n--- Complete Deterministic Automaton (CDFA) ---")
+
+            # Header for symbols [cite: 32, 160]
+            header = f"{'State (Composition)':<{col_width * 1.5}}"
+            for sym in self.alphabet:
+                header += f"{sym:<{col_width}}"
+            print(header)
+            print("-" * len(header))
+
+            # We iterate through all states present in the transitions or labels
+            all_states = sorted(
+                list(set([k[0] for k in self.transitions.keys()] + self.initial_states + self.terminal_states)))
+
+            for state in all_states:
+                # Mark Initial (->) and Terminal (<-)
+                prefix = ""
+                if state in self.initial_states: prefix += "->"
+                if state in self.terminal_states: prefix += "<-"
+
+                state_display = f"{prefix}{state}"
+                row = f"{state_display:<{col_width * 1.5}}"
+
+                for sym in self.alphabet:
+                    targets = self.transitions.get((state, sym), [])
+                    cell = ", ".join(map(str, targets)) if targets else "--"
+                    row += f"{cell:<{col_width}}"
+
+                print(row)
+
+            print("-" * len(header))
+            print("Note: State names (e.g., '0-1') indicate the set of original states they represent.\n")
+
     def epsilon_check(self, states):
         """
         Calcule la fermeture-epsilon d'un ensemble d'états.
@@ -205,6 +250,12 @@ class Automaton:
 
 
 # start functions
+
+def is_automaton(object):
+    if type(object) == Automaton:
+        return True
+    return False
+
 
 def read_automaton_from_file(filename, target_id):
     """
@@ -335,6 +386,8 @@ def display_Automatoon(FA):
         for j in used_symbols:
             targets = FA.transitions.get((i, j), [])
             cell = ", ".join(map(str, targets)) if targets else "--"
+
+            # We print it
             print(f"{cell:<{col_width}}", end="")
 
         print()
