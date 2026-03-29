@@ -20,6 +20,9 @@ class Automaton:
         Entry : Object of type Automaton
         Exit : Boolean
         """
+        if any(key[1] == 'e' for key in self.transitions.keys()):
+            print("Not deterministic: contains epsilon transitions.")
+            return False
 
         if len(self.initial_states) != 1:
             print("Not deterministic: multiple or zero initial states.")
@@ -91,7 +94,7 @@ class Automaton:
             return self
 
         # 1. Creation of the new initial state
-        initial_labels = self.initial_states
+        initial_labels = self.epsilon_check(self.initial_states)
         initial_labels.sort()           #to prevent 1-3 != 3-1
 
         start_label = ""
@@ -122,8 +125,9 @@ class Automaton:
                         potential_targets = self.transitions[(state, symbol)]
 
                         for t in potential_targets:
-                            if t not in targets_found:
-                                targets_found.append(t)
+                            for closure_state in self.epsilon_check(t):
+                                if closure_state not in targets_found:
+                                    targets_found.append(closure_state)
 
                 # Sorting of the new target
                 targets_found.sort()
@@ -161,7 +165,7 @@ class Automaton:
 
         # 4. Creation of the new automaton
         new_automaton = Automaton(
-            self.alphabet_size,
+            len([s for s in self.alphabet if s != 'e']),
             len(new_states_list),
             [start_label],
             new_terminals,
@@ -169,6 +173,28 @@ class Automaton:
         )
         # Si besoin de récuperer les states il faudra rajouter un attribut new_states_composition
         return new_automaton
+
+    def epsilon_check(self, states):
+        """
+        Calcule la fermeture-epsilon d'un ensemble d'états.
+        'states' peut être un entier unique ou une liste/set d'états.
+        """
+        if isinstance(states, (int, str)):
+            states = [states]
+
+        closure = set(states)
+        stack = list(states)
+
+        while stack:
+            current = stack.pop()
+            # We verify e transistions for this state
+            # We use get to bypass errors if no transistions e exist
+            for target in self.transitions.get((current, 'e'), []):
+                if target not in closure:
+                    closure.add(target)
+                    stack.append(target)
+
+        return sorted(list(closure))
 
 
 
@@ -249,11 +275,10 @@ def standardize(automaton):
     else:
         # Check if any transition points to the single initial state
         initial_state = list(automaton.initial_states)[0]
-        for source in automaton.transitions:
-            for label in automaton.transitions[source]:
-                if initial_state in automaton.transitions[source][label]:
-                    is_already_standard = False
-                    break
+        for (src, sym), targets in automaton.transitions.items():
+            if initial_state in targets:
+                is_already_standard = False
+                break
 
     if is_already_standard:
         return automaton  # No changes needed
@@ -263,56 +288,53 @@ def standardize(automaton):
 
     # Inherit transitions from all old initial states
     # If old initial states had: q0 --a--> q1, then new state gets: S --a--> q1
-    new_transitions = {}
     for init_state in automaton.initial_states:
-        if init_state in automaton.transitions:
-            for label, targets in automaton.transitions[init_state].items():
-                if label not in new_transitions:
-                    new_transitions[label] = set()
-                new_transitions[label].update(targets)
+        for sym in automaton.alphabet:
+            if (init_state, sym) in automaton.transitions:
+                # If the transition doesn't exist yet for S we createe the list
+                if (new_start, sym) not in automaton.transitions:
+                    automaton.transitions[(new_start, sym)] = []
 
-    # Add these transitions to the automaton for the new state
-    automaton.transitions[new_start] = new_transitions
+                # We add the targets of the previous initial state to S
+                for t in automaton.transitions[(init_state, sym)]:
+                    if t not in automaton.transitions[(new_start, sym)]:
+                        automaton.transitions[(new_start, sym)].append(t)
 
     # Handle terminal status
     # If any original initial state was terminal, the new start state is also terminal
     for init_state in automaton.initial_states:
         if init_state in automaton.terminal_states:
-            automaton.terminal_states.add(new_start)
+            if new_start not in automaton.terminal_states:
+                automaton.terminal_states.append(new_start)
             break
 
     # Update initial states to ONLY be the new start state
-    automaton.initial_states = {new_start}
+    automaton.initial_states = [new_start]
 
     return automaton
 
 def display_Automatoon(FA):
-    alphabet_liste = list(string.ascii_lowercase)
+    used_symbols = sorted(list(set(k[1] for k in FA.transitions.keys())))
     col_width = 10  # We define a width of 10 to align properly the columns
 
     #We align with < to the left
     print(f"{'':<16}", end="")
-    for i in range(FA.alphabet_size):
-        print(f"{alphabet_liste[i]:<{col_width}}", end="")
+    for i in used_symbols:
+        print(f"{i:<{col_width}}", end="")
     print()
 
-    for i in range(FA.nb_states):
+    all_states = sorted(list(set([k[0] for k in FA.transitions.keys()] + FA.initial_states + FA.terminal_states)))
+    for i in all_states:
         prefix = ""
         if i in FA.initial_states: prefix += "->"
         if i in FA.terminal_states: prefix += "<-"
 
 
-        print(f"{prefix:<8}", end="")
-        print(f"{str(i):<8}", end="")
+        print(f"{prefix:<8}{str(i):<8}", end="")
 
-        for j in range(FA.alphabet_size):
-            sym = alphabet_liste[j]
-            targets = FA.transitions.get((i, sym), [])
-
-            #We prepare the text of the cell
+        for j in used_symbols:
+            targets = FA.transitions.get((i, j), [])
             cell = ", ".join(map(str, targets)) if targets else "--"
-
-            # We print it
             print(f"{cell:<{col_width}}", end="")
 
         print()
@@ -330,7 +352,7 @@ def recognize_word(word, A):
     #Uses a tuple (state, symbol) defined in the Automaton class
    
     # Initialize the current states with the automaton's initial states
-    current_states = set(A.initial_states)
+    current_states = set(A.epsilon_check(A.initial_states))
     
     # Process the word character by character
     for char in word:
@@ -341,7 +363,7 @@ def recognize_word(word, A):
                 # Add all valid target states to our next step
                 next_states.update(A.transitions[(state, char)])
         
-        current_states = next_states
+        current_states = set(A.epsilon_check(list(next_states)))
         
         # Optimization: If no states are active, the word cannot be recognized
         if not current_states:
@@ -364,5 +386,78 @@ def word_recognition_loop(A):
         recognize_word(word, A) 
         word = read_word()
 
+
+
+def minimize(FA):
+    alphabet = list(string.ascii_lowercase[:FA.alphabet_size])
+
+    #We look in the transistion keys to find the states
+    all_states = sorted(list(set([k[0] for k in FA.transitions.keys()] + FA.initial_states + FA.terminal_states)))
+
+    final_states = set(FA.terminal_states)
+    non_final_states = set(all_states) - final_states
+
+    p = []
+    if final_states: p.append(tuple(sorted(list(final_states))))
+    if non_final_states: p.append(tuple(sorted(list(non_final_states))))
+
+    def get_group_index(state, current_partition):
+        for idx, group in enumerate(current_partition):
+            if state in group:
+                return idx
+        return -1
+
+    while True:
+        new_p = []
+        for group in p:
+            if len(group) <= 1:
+                new_p.append(group)
+                continue
+
+            signatures = {}
+            for state in group:
+                sig = []
+                for sym in alphabet:
+                    # We search the target : if it is a DFA, targets[0] exists
+                    targets = FA.transitions.get((state, sym), [None])
+                    target = targets[0] if targets else None
+                    sig.append(get_group_index(target, p))
+
+                sig = tuple(sig)
+                if sig not in signatures: signatures[sig] = []
+                signatures[sig].append(state)
+
+            for sub_group in signatures.values():
+                new_p.append(tuple(sorted(sub_group)))
+
+        if len(new_p) == len(p): break
+        p = new_p
+
+
+    # We transform the groups in exploitable datas
+    new_nb_states = len(p)
+    new_initial_states = []
+    new_terminal_states = []
+    new_transitions = {}
+
+    state_to_new_idx = {}
+    for idx, group in enumerate(p):
+        for old_state in group:
+            state_to_new_idx[old_state] = idx
+
+        if any(s in FA.initial_states for s in group):
+            new_initial_states.append(idx)
+        if any(s in FA.terminal_states for s in group):
+            new_terminal_states.append(idx)
+
+    for idx, group in enumerate(p):
+        rep = group[0]
+        for sym in alphabet:
+            old_targets = FA.transitions.get((rep, sym), [])
+            if old_targets:
+                new_target = state_to_new_idx[old_targets[0]]
+                new_transitions[(idx, sym)] = [new_target]
+
+    return Automaton(FA.alphabet_size, new_nb_states, new_initial_states, new_terminal_states, new_transitions)
 
 #end functions

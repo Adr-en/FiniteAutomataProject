@@ -1,4 +1,6 @@
 import Functions as F
+from Functions import display_Automatoon
+
 
 #test
 def main():
@@ -14,6 +16,8 @@ def main():
 
         print(f"\n--- Analysis of FA #{formatted_id} ---")
         if fa:
+            display_Automatoon(fa)
+            display_Automatoon(F.minimize(fa.determinize_and_complete()))
             is_det = fa.is_deterministic()
             is_comp = fa.is_complete()
             is_std = fa.is_standard()
