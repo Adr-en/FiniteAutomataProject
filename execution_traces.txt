@@ -1,0 +1,1444 @@
+Which FA do you want to use? (or 'exit'): 1
+
+--- Analysis of FA #01 ---
+
+Displaying Automatoon :
+
+-><-    0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+
+-><-    0
+Displaying minimized automatoon :
+
+-><-    0
+
+
+Minimal state   | Original DFA states
+0               | 0
+==================================================
+
+Which FA do you want to use? (or 'exit'): 2
+
+--- Analysis of FA #02 ---
+
+Displaying Automatoon :
+                a
+-><-    0       0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a
+-><-    0       0
+Displaying minimized automatoon :
+                a
+-><-    0       0
+
+
+Minimal state   | Original DFA states
+0               | 0
+==================================================
+
+Which FA do you want to use? (or 'exit'): 3
+
+--- Analysis of FA #03 ---
+
+Displaying Automatoon :
+                a
+->      0       1
+<-      1       --
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a
+->      0       1
+<-      1       --
+Displaying minimized automatoon :
+                a
+<-      0       --
+->      1       0
+
+
+Minimal state   | Original DFA states
+0               | 1
+1               | 0
+==================================================
+
+Which FA do you want to use? (or 'exit'): 5
+
+--- Analysis of FA #05 ---
+
+Displaying Automatoon :
+                a         b
+        0       0         0
+->      1       2         0
+<-      2       --        --
+->      3       0         4
+<-      4       --        --
+Not deterministic: multiple or zero initial states.
+Displaying determinized and complete automatoon :
+                a         b
+        0       0         0
+<-      0-2     0         0
+<-      0-4     0         0
+->      1-3     0-2       0-4
+Displaying minimized automatoon :
+                a         b
+<-      0       1         1
+        1       1         1
+->      2       0         0
+
+
+Minimal state   | Original DFA states
+0               | 0-2, 0-4
+1               | 0
+2               | 1-3
+==================================================
+
+Which FA do you want to use? (or 'exit'): 6
+
+--- Analysis of FA #06 ---
+
+Displaying Automatoon :
+                a         b
+<-      0       --        --
+->      1       2         --
+<-      2       --        --
+->      3       --        0
+Not deterministic: multiple or zero initial states.
+Displaying determinized and complete automatoon :
+                a         b
+<-      0       P         P
+->      1-3     2         0
+<-      2       P         P
+        P       P         P
+Displaying minimized automatoon :
+                a         b
+<-      0       2         2
+->      1       0         0
+        2       2         2
+
+
+Minimal state   | Original DFA states
+0               | 0, 2
+1               | 1-3
+2               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 7
+
+--- Analysis of FA #07 ---
+
+Displaying Automatoon :
+                a
+<-      0       --
+->      1       1, 0
+Not deterministic: state 1 has multiple transitions for 'a'.
+Displaying determinized and complete automatoon :
+                a
+<-      0-1     0-1
+->      1       0-1
+Displaying minimized automatoon :
+                a
+<-      0       0
+->      1       0
+
+
+Minimal state   | Original DFA states
+0               | 0-1
+1               | 1
+==================================================
+
+Which FA do you want to use? (or 'exit'): 8
+
+--- Analysis of FA #08 ---
+
+Displaying Automatoon :
+                a
+<-      0       0
+->      1       0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a
+<-      0       0
+->      1       0
+Displaying minimized automatoon :
+                a
+<-      0       0
+->      1       0
+
+
+Minimal state   | Original DFA states
+0               | 0
+1               | 1
+==================================================
+
+Which FA do you want to use? (or 'exit'): 9
+
+--- Analysis of FA #09 ---
+
+Displaying Automatoon :
+                a         b
+<-      0       2         --
+-><-    1       2         --
+        2       3         3
+        3       4         --
+        4       5         5
+        5       0         --
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b
+<-      0       2         --
+-><-    1       2         --
+        2       3         3
+        3       4         --
+        4       5         5
+        5       0         --
+Displaying minimized automatoon :
+                a         b
+-><-    0       1         --
+        1       3         3
+        2       4         4
+        3       2         --
+        4       0         --
+
+
+Minimal state   | Original DFA states
+0               | 0, 1
+1               | 2
+2               | 4
+3               | 3
+4               | 5
+==================================================
+
+Which FA do you want to use? (or 'exit'): 10
+
+--- Analysis of FA #10 ---
+
+Displaying Automatoon :
+                a         b
+-><-    0       1         --
+        1       2         2
+        2       3         --
+        3       4         4
+        4       0         --
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b
+-><-    0       1         --
+        1       2         2
+        2       3         --
+        3       4         4
+        4       0         --
+Displaying minimized automatoon :
+                a         b
+-><-    0       1         --
+        1       3         3
+        2       4         4
+        3       2         --
+        4       0         --
+
+
+Minimal state   | Original DFA states
+0               | 0
+1               | 1
+2               | 3
+3               | 2
+4               | 4
+==================================================
+
+Which FA do you want to use? (or 'exit'): 11
+
+--- Analysis of FA #11 ---
+
+Displaying Automatoon :
+                a         b
+->      0       2         3
+        1       3         3
+<-      2       1         0
+        3       3         3
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b
+->      0       2         3
+        1       3         3
+<-      2       1         0
+        3       3         3
+Displaying minimized automatoon :
+                a         b
+<-      0       2         1
+->      1       0         2
+        2       2         2
+
+
+Minimal state   | Original DFA states
+0               | 2
+1               | 0
+2               | 1, 3
+==================================================
+
+Which FA do you want to use? (or 'exit'): 12
+
+--- Analysis of FA #12 ---
+
+Displaying Automatoon :
+                a         b         c         d
+        0       --        0         --        1
+-><-    1       1         --        0         --
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+        0       --        0         --        1
+-><-    1       1         --        0         --
+Displaying minimized automatoon :
+                a         b         c         d
+-><-    0       0         --        1         --
+        1       --        1         --        0
+
+
+Minimal state   | Original DFA states
+0               | 1
+1               | 0
+==================================================
+
+Which FA do you want to use? (or 'exit'): 13
+
+--- Analysis of FA #13 ---
+
+Displaying Automatoon :
+                a
+<-      0       0
+->      1       2
+        2       3
+<-      3       4
+<-      4       5
+<-      5       6
+<-      6       7
+<-      7       0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a
+<-      0       0
+->      1       2
+        2       3
+<-      3       4
+<-      4       5
+<-      5       6
+<-      6       7
+<-      7       0
+Displaying minimized automatoon :
+                a
+<-      0       0
+->      1       2
+        2       0
+
+
+Minimal state   | Original DFA states
+0               | 0, 3, 4, 5, 6, 7
+1               | 1
+2               | 2
+==================================================
+
+Which FA do you want to use? (or 'exit'): 14
+
+--- Analysis of FA #14 ---
+
+Displaying Automatoon :
+                a         b         c         d
+->      0       0         2         3         1
+<-      1       --        --        --        1
+        2       --        2         3         1
+        3       --        --        3         1
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+->      0       0         2         3         1
+<-      1       --        --        --        1
+        2       --        2         3         1
+        3       --        --        3         1
+Displaying minimized automatoon :
+                a         b         c         d
+<-      0       --        --        --        0
+->      1       1         2         3         0
+        2       --        2         3         0
+        3       --        --        3         0
+
+
+Minimal state   | Original DFA states
+0               | 1
+1               | 0
+2               | 2
+3               | 3
+==================================================
+
+Which FA do you want to use? (or 'exit'): 15
+
+--- Analysis of FA #15 ---
+
+Displaying Automatoon :
+                a         b         c         d
+        0       0         --        --        --
+->      1       1         2         3         4
+        2       0         2         3         4
+        3       0         0         3         4
+<-      4       0         0         0         4
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+        0       0         --        --        --
+->      1       1         2         3         4
+        2       0         2         3         4
+        3       0         0         3         4
+<-      4       0         0         0         4
+Displaying minimized automatoon :
+                a         b         c         d
+<-      0       1         1         1         0
+        1       1         --        --        --
+->      2       2         3         4         0
+        3       1         3         4         0
+        4       1         1         4         0
+
+
+Minimal state   | Original DFA states
+0               | 4
+1               | 0
+2               | 1
+3               | 2
+4               | 3
+==================================================
+
+Which FA do you want to use? (or 'exit'): 16
+
+--- Analysis of FA #16 ---
+
+Displaying Automatoon :
+                a         b         c         d
+<-      0       --        --        --        --
+->      1       2, 1      --        --        --
+        2       --        3, 2      --        --
+        3       --        --        4, 3      --
+        4       --        --        --        0, 4
+Not deterministic: state 1 has multiple transitions for 'a'.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+<-      0-4     P         P         P         0-4
+->      1       1-2       P         P         P
+        1-2     1-2       2-3       P         P
+        2-3     P         2-3       3-4       P
+        3-4     P         P         3-4       0-4
+        P       P         P         P         P
+Displaying minimized automatoon :
+                a         b         c         d
+<-      0       2         2         2         0
+->      1       3         2         2         2
+        2       2         2         2         2
+        3       3         4         2         2
+        4       2         4         5         2
+        5       2         2         5         0
+
+
+Minimal state   | Original DFA states
+0               | 0-4
+1               | 1
+2               | P
+3               | 1-2
+4               | 2-3
+5               | 3-4
+==================================================
+
+Which FA do you want to use? (or 'exit'): 17
+
+--- Analysis of FA #17 ---
+
+Displaying Automatoon :
+                a         b         c         d
+->      1       1, 2      --        --        --
+->      2       --        2, 3      --        --
+->      3       --        --        4, 3      --
+->      4       --        --        --        5, 4
+<-      5       0         0         0         0
+Not deterministic: multiple or zero initial states.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+        0       P         P         P         P
+<-      0-4-5   0         0         0         0-4-5
+        1-2     1-2       2-3       P         P
+->      1-2-3-4 1-2       2-3       3-4       4-5
+        2-3     P         2-3       3-4       P
+        3-4     P         P         3-4       4-5
+<-      4-5     0         0         0         0-4-5
+        P       P         P         P         P
+Displaying minimized automatoon :
+                a         b         c         d
+<-      0       1         1         1         0
+        1       1         1         1         1
+        2       2         3         1         1
+        3       1         3         5         1
+->      4       2         3         5         0
+        5       1         1         5         0
+
+
+Minimal state   | Original DFA states
+0               | 0-4-5, 4-5
+1               | 0, P
+2               | 1-2
+3               | 2-3
+4               | 1-2-3-4
+5               | 3-4
+==================================================
+
+Which FA do you want to use? (or 'exit'): 18
+
+--- Analysis of FA #18 ---
+
+Displaying Automatoon :
+                a         b         c         d
+<-      0       --        --        --        --
+->      1       2         3         4         0
+        2       2         3         4         0
+        3       --        3         4         0
+        4       --        --        4         0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+<-      0       --        --        --        --
+->      1       2         3         4         0
+        2       2         3         4         0
+        3       --        3         4         0
+        4       --        --        4         0
+Displaying minimized automatoon :
+                a         b         c         d
+<-      0       --        --        --        --
+->      1       1         2         3         0
+        2       --        2         3         0
+        3       --        --        3         0
+
+
+Minimal state   | Original DFA states
+0               | 0
+1               | 1, 2
+2               | 3
+3               | 4
+==================================================
+
+Which FA do you want to use? (or 'exit'): 19
+
+--- Analysis of FA #19 ---
+
+Displaying Automatoon :
+                a
+<-      0       0
+->      1       2
+        2       0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a
+<-      0       0
+->      1       2
+        2       0
+Displaying minimized automatoon :
+                a
+<-      0       0
+->      1       2
+        2       0
+
+
+Minimal state   | Original DFA states
+0               | 0
+1               | 1
+2               | 2
+==================================================
+
+Which FA do you want to use? (or 'exit'): 20
+
+--- Analysis of FA #20 ---
+
+Displaying Automatoon :
+                a         b         c         d
+->      0       --        --        --        5
+->      1       2         --        --        --
+        2       --        3         --        --
+        3       --        --        4         --
+        4       --        --        --        5
+<-      5       --        --        --        --
+->      6       2         --        --        --
+->      7       --        3         --        --
+->      8       --        --        4         --
+Not deterministic: multiple or zero initial states.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+->      0-1-6-7-82         3         4         5
+        2       P         3         P         P
+        3       P         P         4         P
+        4       P         P         P         5
+<-      5       P         P         P         P
+        P       P         P         P         P
+Displaying minimized automatoon :
+                a         b         c         d
+<-      0       4         4         4         4
+->      1       3         5         2         0
+        2       4         4         4         0
+        3       4         5         4         4
+        4       4         4         4         4
+        5       4         4         2         4
+
+
+Minimal state   | Original DFA states
+0               | 5
+1               | 0-1-6-7-8
+2               | 4
+3               | 2
+4               | P
+5               | 3
+==================================================
+
+Which FA do you want to use? (or 'exit'): 21
+
+--- Analysis of FA #21 ---
+
+Displaying Automatoon :
+                a         b         c         d
+        0       --        --        --        1
+-><-    1       2         --        --        --
+        2       --        3         --        --
+        3       --        --        0         --
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+        0       --        --        --        1
+-><-    1       2         --        --        --
+        2       --        3         --        --
+        3       --        --        0         --
+Displaying minimized automatoon :
+                a         b         c         d
+-><-    0       2         --        --        --
+        1       --        --        --        0
+        2       --        3         --        --
+        3       --        --        1         --
+
+
+Minimal state   | Original DFA states
+0               | 1
+1               | 0
+2               | 2
+3               | 3
+==================================================
+
+Which FA do you want to use? (or 'exit'): 22
+
+--- Analysis of FA #22 ---
+
+Displaying Automatoon :
+                a         b         c         d
+        0       --        --        --        1
+-><-    1       2, 0, 3   --        --        --
+        2       --        3         --        --
+        3       --        --        0         --
+Not deterministic: state 1 has multiple transitions for 'a'.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+        0       P         P         P         1
+        0-2-3   P         3         0         1
+-><-    1       0-2-3     P         P         P
+        3       P         P         0         P
+        P       P         P         P         P
+Displaying minimized automatoon :
+                a         b         c         d
+-><-    0       2         4         4         4
+        1       4         4         4         0
+        2       4         3         1         0
+        3       4         4         1         4
+        4       4         4         4         4
+
+
+Minimal state   | Original DFA states
+0               | 1
+1               | 0
+2               | 0-2-3
+3               | 3
+4               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 23
+
+--- Analysis of FA #23 ---
+
+Displaying Automatoon :
+                a         b         c         d
+<-      0       --        --        --        0
+->      1       2         --        --        --
+        2       2         3         --        --
+        3       --        3         4         --
+        4       --        --        4         0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+<-      0       --        --        --        0
+->      1       2         --        --        --
+        2       2         3         --        --
+        3       --        3         4         --
+        4       --        --        4         0
+Displaying minimized automatoon :
+                a         b         c         d
+<-      0       --        --        --        0
+->      1       2         --        --        --
+        2       2         3         --        --
+        3       --        3         4         --
+        4       --        --        4         0
+
+
+Minimal state   | Original DFA states
+0               | 0
+1               | 1
+2               | 2
+3               | 3
+4               | 4
+==================================================
+
+Which FA do you want to use? (or 'exit'): 24
+
+--- Analysis of FA #24 ---
+
+Displaying Automatoon :
+                a         b         c         d
+<-      0       --        --        --        0
+->      1       2         3         4         0
+        2       2         3         4         0
+        3       --        3         4         0
+        4       --        --        4         0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+<-      0       --        --        --        0
+->      1       2         3         4         0
+        2       2         3         4         0
+        3       --        3         4         0
+        4       --        --        4         0
+Displaying minimized automatoon :
+                a         b         c         d
+<-      0       --        --        --        0
+->      1       1         2         3         0
+        2       --        2         3         0
+        3       --        --        3         0
+
+
+Minimal state   | Original DFA states
+0               | 0
+1               | 1, 2
+2               | 3
+3               | 4
+==================================================
+
+Which FA do you want to use? (or 'exit'): 25
+
+--- Analysis of FA #25 ---
+
+Displaying Automatoon :
+                a         b         c         d
+<-      0       --        --        --        --
+->      1       2, 1      3         4         0
+        2       --        3, 2      4         0
+        3       --        --        4, 3      0
+        4       --        --        --        0, 4
+Not deterministic: state 1 has multiple transitions for 'a'.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+<-      0       P         P         P         P
+<-      0-4     P         P         P         0-4
+->      1       1-2       3         4         0
+        1-2     1-2       2-3       4         0
+        2-3     P         2-3       3-4       0
+        3       P         P         3-4       0
+        3-4     P         P         3-4       0-4
+        4       P         P         P         0-4
+        P       P         P         P         P
+Displaying minimized automatoon :
+                a         b         c         d
+<-      0       8         8         8         8
+<-      1       8         8         8         1
+->      2       3         5         7         0
+        3       3         4         7         0
+        4       8         4         6         0
+        5       8         8         6         0
+        6       8         8         6         1
+        7       8         8         8         1
+        8       8         8         8         8
+
+
+Minimal state   | Original DFA states
+0               | 0
+1               | 0-4
+2               | 1
+3               | 1-2
+4               | 2-3
+5               | 3
+6               | 3-4
+7               | 4
+8               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 27
+
+--- Analysis of FA #27 ---
+
+Displaying Automatoon :
+                a         b
+<-      0       0         0
+->      1       2         2
+        2       --        0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b
+<-      0       0         0
+->      1       2         2
+        2       --        0
+Displaying minimized automatoon :
+                a         b
+<-      0       0         0
+->      1       2         2
+        2       --        0
+
+
+Minimal state   | Original DFA states
+0               | 0
+1               | 1
+2               | 2
+==================================================
+
+Which FA do you want to use? (or 'exit'): 28
+
+--- Analysis of FA #28 ---
+
+Displaying Automatoon :
+                a
+<-      0       4
+->      1       2, 4
+        2       3
+<-      3       2
+        4       5
+        5       0
+Not deterministic: state 1 has multiple transitions for 'a'.
+Displaying determinized and complete automatoon :
+                a
+<-      0-2     3-4
+<-      0-3     2-4
+->      1       2-4
+        2-4     3-5
+        2-5     0-3
+<-      3-4     2-5
+<-      3-5     0-2
+Displaying minimized automatoon :
+                a
+<-      0       3
+<-      1       0
+<-      2       5
+<-      3       6
+->      4       5
+        5       1
+        6       2
+
+
+Minimal state   | Original DFA states
+0               | 0-2
+1               | 3-5
+2               | 0-3
+3               | 3-4
+4               | 1
+5               | 2-4
+6               | 2-5
+==================================================
+
+Which FA do you want to use? (or 'exit'): 29
+
+--- Analysis of FA #29 ---
+
+Displaying Automatoon :
+                a
+<-      0       4
+->      1       2, 4
+        2       3
+<-      3       2, 0
+        4       3, 5
+        5       0
+Not deterministic: state 1 has multiple transitions for 'a'.
+Displaying determinized and complete automatoon :
+                a
+<-      0-2     3-4
+<-      0-2-3-4 0-2-3-4-5
+<-      0-2-3-4-50-2-3-4-5
+<-      0-2-3-5 0-2-3-4
+->      1       2-4
+        2-4     3-5
+<-      3-4     0-2-3-5
+<-      3-5     0-2
+Displaying minimized automatoon :
+                a
+<-      0       0
+->      1       2
+        2       0
+
+
+Minimal state   | Original DFA states
+0               | 0-2, 0-2-3-4, 0-2-3-4-5, 0-2-3-5, 3-4, 3-5
+1               | 1
+2               | 2-4
+==================================================
+
+Which FA do you want to use? (or 'exit'): 30
+
+--- Analysis of FA #30 ---
+
+Displaying Automatoon :
+                a
+<-      0       3
+->      1       2
+        2       3
+<-      3       4
+<-      4       0
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a
+<-      0       3
+->      1       2
+        2       3
+<-      3       4
+<-      4       0
+Displaying minimized automatoon :
+                a
+<-      0       0
+->      1       2
+        2       0
+
+
+Minimal state   | Original DFA states
+0               | 0, 3, 4
+1               | 1
+2               | 2
+==================================================
+
+Which FA do you want to use? (or 'exit'): 31
+
+--- Analysis of FA #31 ---
+
+Displaying Automatoon :
+                a         b         e
+->      0       --        --        1, 4
+        1       2         --        3
+        2       3         1         --
+        3       --        3         7
+        4       --        5         --
+        5       --        6         --
+        6       --        --        7, 4
+<-      7       --        --        --
+Not deterministic: contains epsilon transitions.
+Displaying determinized and complete automatoon :
+                a         b         c
+-><-    0-1-3-4-72         3-5-7     P
+<-      1-3-7   2         3-7       P
+        2       3-7       1-3-7     P
+<-      3-4-6-7 P         3-5-7     P
+<-      3-5-7   P         3-4-6-7   P
+<-      3-7     P         3-7       P
+        P       P         P         P
+Displaying minimized automatoon :
+                a         b         c
+-><-    0       2         1         3
+<-      1       3         1         3
+        2       1         0         3
+        3       3         3         3
+
+
+Minimal state   | Original DFA states
+0               | 0-1-3-4-7, 1-3-7
+1               | 3-4-6-7, 3-5-7, 3-7
+2               | 2
+3               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 32
+
+--- Analysis of FA #32 ---
+
+Displaying Automatoon :
+                a         b         c         e
+->      0       --        --        --        1, 10
+        1       --        --        --        2, 6
+        2       --        --        --        3, 5
+        3       --        4         --        --
+        4       --        --        --        5, 3
+        5       --        --        --        8
+        6       7         --        --        --
+        7       --        --        --        8
+        8       --        --        9         --
+        9       --        --        --        21
+        10      --        --        --        11, 15
+        11      --        --        --        12, 14
+        12      13        --        --        --
+        13      --        --        --        14, 12
+        14      --        --        --        17
+        15      --        16        --        --
+        16      --        --        --        17
+        17      --        --        --        18, 20
+        18      --        --        19        --
+        19      --        --        --        20, 18
+        20      --        --        --        21
+<-      21      --        --        --        --
+Not deterministic: contains epsilon transitions.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+-><-    0-1-2-3-5-6-8-10-11-12-14-15-17-18-20-217-8-12-13-14-17-18-20-213-4-5-8-16-17-18-20-219-18-19-20-21P
+<-      12-13-14-17-18-20-2112-13-14-17-18-20-21P         18-19-20-21P
+<-      18-19-20-21P         P         18-19-20-21P
+        3-4-5-8 P         3-4-5-8   9-21      P
+<-      3-4-5-8-16-17-18-20-21P         3-4-5-8   9-18-19-20-21P
+<-      7-8-12-13-14-17-18-20-2112-13-14-17-18-20-21P         9-18-19-20-21P
+<-      9-18-19-20-21P         P         18-19-20-21P
+<-      9-21    P         P         P         P
+        P       P         P         P         P
+Displaying minimized automatoon :
+                a         b         c         d
+-><-    0       1         3         2         6
+<-      1       1         6         2         6
+<-      2       6         6         2         6
+<-      3       6         5         2         6
+<-      4       6         6         6         6
+        5       6         5         4         6
+        6       6         6         6         6
+
+
+Minimal state   | Original DFA states
+0               | 0-1-2-3-5-6-8-10-11-12-14-15-17-18-20-21
+1               | 12-13-14-17-18-20-21, 7-8-12-13-14-17-18-20-21
+2               | 18-19-20-21, 9-18-19-20-21
+3               | 3-4-5-8-16-17-18-20-21
+4               | 9-21
+5               | 3-4-5-8
+6               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 33
+
+--- Analysis of FA #33 ---
+
+Displaying Automatoon :
+                a         b         c         e
+->      0       --        --        --        1, 7
+        1       --        --        --        2, 4
+        2       3         --        --        --
+        3       --        --        --        5
+        4       --        4         --        5
+        5       --        --        6         --
+        6       --        --        --        12
+        7       --        --        --        8, 9
+        8       8         --        --        11
+        9       --        10        --        --
+        10      --        --        --        11
+        11      --        --        11        12
+<-      12      --        --        --        --
+Not deterministic: contains epsilon transitions.
+Displaying determinized and complete automatoon :
+                a         b         c         d
+-><-    0-1-2-4-5-7-8-9-11-123-5-8-11-124-5-10-11-126-11-12   P
+<-      11-12   P         P         11-12     P
+<-      3-5-8-11-128-11-12   P         6-11-12   P
+        4-5     P         4-5       6-12      P
+<-      4-5-10-11-12P         4-5       6-11-12   P
+<-      6-11-12 P         P         11-12     P
+<-      6-12    P         P         P         P
+<-      8-11-12 8-11-12   P         11-12     P
+        P       P         P         P         P
+Displaying minimized automatoon :
+                a         b         c         d
+-><-    0       3         2         1         6
+<-      1       6         6         1         6
+<-      2       6         5         1         6
+<-      3       3         6         1         6
+<-      4       6         6         6         6
+        5       6         5         4         6
+        6       6         6         6         6
+
+
+Minimal state   | Original DFA states
+0               | 0-1-2-4-5-7-8-9-11-12
+1               | 11-12, 6-11-12
+2               | 4-5-10-11-12
+3               | 3-5-8-11-12, 8-11-12
+4               | 6-12
+5               | 4-5
+6               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 34
+
+--- Analysis of FA #34 ---
+
+Displaying Automatoon :
+                a         b         e
+->      0       --        --        1, 4
+        1       2         --        2
+        2       --        3         --
+        3       --        --        6, 2
+        4       --        5         --
+        5       --        --        6, 4
+<-      6       --        --        --
+Not deterministic: contains epsilon transitions.
+Displaying determinized and complete automatoon :
+                a         b         c
+->      0-1-2-4 2         2-3-4-5-6 P
+        2       P         2-3-6     P
+<-      2-3-4-5-6P         2-3-4-5-6 P
+<-      2-3-6   P         2-3-6     P
+        P       P         P         P
+Displaying minimized automatoon :
+                a         b         c
+<-      0       3         0         3
+->      1       2         0         3
+        2       3         0         3
+        3       3         3         3
+
+
+Minimal state   | Original DFA states
+0               | 2-3-4-5-6, 2-3-6
+1               | 0-1-2-4
+2               | 2
+3               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 35
+
+--- Analysis of FA #35 ---
+
+Displaying Automatoon :
+                a         b         e
+->      0       --        --        1, 4
+        1       2         --        --
+        2       --        3         --
+        3       --        --        10
+        4       --        --        5, 8
+        5       6         --        --
+        6       --        7         --
+        7       --        --        5, 8
+        8       9         --        --
+        9       --        --        10
+<-      10      --        --        --
+Not deterministic: contains epsilon transitions.
+Displaying determinized and complete automatoon :
+                a         b         c
+->      0-1-4-5-82-6-9-10  P         P
+<-      2-6-9-10P         3-5-7-8-10P
+<-      3-5-7-8-106-9-10    P         P
+        5-7-8   6-9-10    P         P
+<-      6-9-10  P         5-7-8     P
+        P       P         P         P
+Displaying minimized automatoon :
+                a         b         c
+<-      0       5         1         5
+<-      1       2         5         5
+<-      2       5         4         5
+->      3       0         5         5
+        4       2         5         5
+        5       5         5         5
+
+
+Minimal state   | Original DFA states
+0               | 2-6-9-10
+1               | 3-5-7-8-10
+2               | 6-9-10
+3               | 0-1-4-5-8
+4               | 5-7-8
+5               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 36
+
+--- Analysis of FA #36 ---
+
+Displaying Automatoon :
+                a         b
+->      0       1         1, 2
+<-      1       --        0, 2
+-><-    2       0, 1      --
+Not deterministic: multiple or zero initial states.
+Displaying determinized and complete automatoon :
+                a         b
+<-      0-1     1         0-1-2
+<-      0-1-2   0-1       0-1-2
+-><-    0-2     0-1       1-2
+<-      1       P         0-2
+<-      1-2     0-1       0-2
+        P       P         P
+Displaying minimized automatoon :
+                a         b
+<-      0       2         1
+-><-    1       0         1
+<-      2       3         1
+        3       3         3
+
+
+Minimal state   | Original DFA states
+0               | 0-1
+1               | 0-1-2, 0-2, 1-2
+2               | 1
+3               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 37
+
+--- Analysis of FA #37 ---
+
+Displaying Automatoon :
+                a         b
+-><-    0       1         3
+<-      1       2         4
+<-      2       --        0
+<-      3       1         0
+<-      4       1         --
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b
+-><-    0       1         3
+<-      1       2         4
+<-      2       --        0
+<-      3       1         0
+<-      4       1         --
+Displaying minimized automatoon :
+                a         b
+-><-    0       1         0
+<-      1       2         3
+<-      2       --        0
+<-      3       1         --
+
+
+Minimal state   | Original DFA states
+0               | 0, 3
+1               | 1
+2               | 2
+3               | 4
+==================================================
+
+Which FA do you want to use? (or 'exit'): 38
+
+--- Analysis of FA #38 ---
+
+Displaying Automatoon :
+                a         b
+-><-    0       1         3
+<-      1       1         2
+<-      2       3         3
+<-      3       3         3
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b
+-><-    0       1         3
+<-      1       1         2
+<-      2       3         3
+<-      3       3         3
+Displaying minimized automatoon :
+                a         b
+-><-    0       0         0
+
+
+Minimal state   | Original DFA states
+0               | 0, 1, 2, 3
+==================================================
+
+Which FA do you want to use? (or 'exit'): 39
+
+--- Analysis of FA #39 ---
+
+Displaying Automatoon :
+                a         b
+->      0       1         2
+-><-    1       1         2
+        2       0         1
+->      3       1, 2      --
+Not deterministic: multiple or zero initial states.
+Displaying determinized and complete automatoon :
+                a         b
+        0       1         2
+<-      0-1     1         2
+-><-    0-1-3   1-2       2
+<-      1       1         2
+<-      1-2     0-1       1-2
+        2       0         1
+Displaying minimized automatoon :
+                a         b
+<-      0       0         4
+-><-    1       2         4
+<-      2       0         2
+        3       0         4
+        4       3         0
+
+
+Minimal state   | Original DFA states
+0               | 0-1, 1
+1               | 0-1-3
+2               | 1-2
+3               | 0
+4               | 2
+==================================================
+
+Which FA do you want to use? (or 'exit'): 40
+
+--- Analysis of FA #40 ---
+
+Displaying Automatoon :
+                a         b
+-><-    0       --        1, 2
+->      1       0, 2      2
+<-      2       0         --
+Not deterministic: multiple or zero initial states.
+Displaying determinized and complete automatoon :
+                a         b
+<-      0       P         1-2
+-><-    0-1     0-2       1-2
+<-      0-2     0         1-2
+<-      1-2     0-2       2
+<-      2       0         P
+        P       P         P
+Displaying minimized automatoon :
+                a         b
+<-      0       5         3
+-><-    1       2         3
+<-      2       0         3
+<-      3       2         4
+<-      4       0         5
+        5       5         5
+
+
+Minimal state   | Original DFA states
+0               | 0
+1               | 0-1
+2               | 0-2
+3               | 1-2
+4               | 2
+5               | P
+==================================================
+
+Which FA do you want to use? (or 'exit'): 41
+
+--- Analysis of FA #41 ---
+
+Displaying Automatoon :
+                a         b
+->      0       1         4
+<-      1       2         3
+<-      2       2         3
+<-      3       5         5
+<-      4       5         5
+        5       5         5
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b
+->      0       1         4
+<-      1       2         3
+<-      2       2         3
+<-      3       5         5
+<-      4       5         5
+        5       5         5
+Displaying minimized automatoon :
+                a         b
+<-      0       0         1
+<-      1       3         3
+->      2       0         1
+        3       3         3
+
+
+Minimal state   | Original DFA states
+0               | 1, 2
+1               | 3, 4
+2               | 0
+3               | 5
+==================================================
+
+Which FA do you want to use? (or 'exit'): 42
+
+--- Analysis of FA #42 ---
+
+Displaying Automatoon :
+                a         b         c
+        0       3         1         3
+-><-    1       0         2         --
+        2       1         4         4
+        3       3         3         3
+        4       4         4         4
+The automaton is deterministic.
+Displaying determinized and complete automatoon :
+                a         b         c
+        0       3         1         3
+-><-    1       0         2         --
+        2       1         4         4
+        3       3         3         3
+        4       4         4         4
+Displaying minimized automatoon :
+                a         b         c
+-><-    0       1         2         --
+        1       3         0         3
+        2       0         3         3
+        3       3         3         3
+
+
+Minimal state   | Original DFA states
+0               | 1
+1               | 0
+2               | 2
+3               | 3, 4
+==================================================
+
+Which FA do you want to use? (or 'exit'): 43
+
+--- Analysis of FA #43 ---
+
+Displaying Automatoon :
+                a         b
+->      0       0         1, 0
+        1       2         --
+<-      2       2         2
+Not deterministic: state 0 has multiple transitions for 'b'.
+Displaying determinized and complete automatoon :
+                a         b
+->      0       0         0-1
+        0-1     0-2       0-1
+<-      0-1-2   0-2       0-1-2
+<-      0-2     0-2       0-1-2
+Displaying minimized automatoon :
+                a         b
+<-      0       0         0
+->      1       1         2
+        2       0         2
+
+
+Minimal state   | Original DFA states
+0               | 0-1-2, 0-2
+1               | 0
+2               | 0-1
+==================================================
+
+Which FA do you want to use? (or 'exit'): 44
+
+--- Analysis of FA #44 ---
+
+Displaying Automatoon :
+                a         b
+->      0       1, 2      2
+        1       --        3
+<-      2       3         2
+<-      3       3, 2      3, 2
+Not deterministic: state 0 has multiple transitions for 'a'.
+Displaying determinized and complete automatoon :
+                a         b
+->      0       1-2       2
+<-      1-2     3         2-3
+<-      2       3         2
+<-      2-3     2-3       2-3
+<-      3       2-3       2-3
+Displaying minimized automatoon :
+                a         b
+<-      0       0         0
+->      1       0         0
+
+
+Minimal state   | Original DFA states
+0               | 1-2, 2, 2-3, 3
+1               | 0
+==================================================
+
+Which FA do you want to use? (or 'exit'):

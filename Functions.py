@@ -81,6 +81,30 @@ class Automaton:
         print("The automaton is standard.")
         return True
 
+    def complete(self):
+        if self.is_complete():
+            return self
+
+        new_transitions = self.transitions.copy()
+        sink_state = "P"
+        sink_needed = False
+
+        all_states = set([k[0] for k in self.transitions.keys()] + self.initial_states + self.terminal_states)
+        for state in all_states:
+            for symbol in self.alphabet:
+                if (state, symbol) not in new_transitions or not new_transitions[(state, symbol)]:
+                    new_transitions[(state, symbol)] = [sink_state]
+                    sink_needed = True
+
+        if sink_needed:
+            for symbol in self.alphabet:
+                new_transitions[(sink_state, symbol)] = [sink_state]
+
+            return Automaton(self.alphabet_size, self.nb_states + 1, self.initial_states, self.terminal_states,
+                             new_transitions)
+        return self
+
+
     def determinize_and_complete(self):
         """ The goal is to create a deterministic and complete version of a given automaton.
         For this we first check if it is deterministic.
@@ -93,7 +117,6 @@ class Automaton:
         Exit : Automaton"""
 
         if self.is_deterministic():
-            print("Error : Automaton is already deterministic.")
             return self
 
         # 1. Creation of the new initial state
@@ -179,45 +202,18 @@ class Automaton:
 
 
     def display_complete_deterministic_automaton(self):
-            """
-            Displays the CDFA and explicitly shows the composition of the states
-            in terms of the original automaton states.
-            Entry : Automaton
-            Exit : None
-            """
-            col_width = 15
+            display_Automatoon(self)
 
-            print("\n--- Complete Deterministic Automaton (CDFA) ---")
+    def display_minimal_automaton(self):
+            display_Automatoon(self)
 
-            # Header for symbols [cite: 32, 160]
-            header = f"{'State (Composition)':<{col_width * 1.5}}"
-            for sym in self.alphabet:
-                header += f"{sym:<{col_width}}"
-            print(header)
-            print("-" * len(header))
-
-            # We iterate through all states present in the transitions or labels
-            all_states = sorted(
-                list(set([k[0] for k in self.transitions.keys()] + self.initial_states + self.terminal_states)))
-
-            for state in all_states:
-                # Mark Initial (->) and Terminal (<-)
-                prefix = ""
-                if state in self.initial_states: prefix += "->"
-                if state in self.terminal_states: prefix += "<-"
-
-                state_display = f"{prefix}{state}"
-                row = f"{state_display:<{col_width * 1.5}}"
-
-                for sym in self.alphabet:
-                    targets = self.transitions.get((state, sym), [])
-                    cell = ", ".join(map(str, targets)) if targets else "--"
-                    row += f"{cell:<{col_width}}"
-
-                print(row)
-
-            print("-" * len(header))
-            print("Note: State names (e.g., '0-1') indicate the set of original states they represent.\n")
+            if hasattr(self, 'mapping'):
+                print("\n")
+                print(f"{'Minimal state':<15} | {'Original DFA states'}")
+                for i, original_group in enumerate(self.mapping):
+                    composition = ", ".join(map(str, original_group))
+                    print(f"{i:<15} | {composition}")
+                print("=" * 50 + "\n")
 
     def epsilon_check(self, states):
         """
@@ -511,6 +507,8 @@ def minimize(FA):
                 new_target = state_to_new_idx[old_targets[0]]
                 new_transitions[(idx, sym)] = [new_target]
 
-    return Automaton(FA.alphabet_size, new_nb_states, new_initial_states, new_terminal_states, new_transitions)
+    new_auto = Automaton(FA.alphabet_size, new_nb_states, new_initial_states, new_terminal_states, new_transitions)
+    new_auto.mapping = p
+    return new_auto
 
 #end functions
