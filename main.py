@@ -2,6 +2,7 @@ import Functions as F
 
 #test
 def main():
+
     while True:
         choice = input("Which FA do you want to use? (or 'exit'): ")
         if choice.lower() == 'exit':
@@ -18,10 +19,12 @@ def main():
             is_comp = fa.is_complete()
             is_std = fa.is_standard()
 
-
-
         else:
             print("Automaton not found.")
+
+
+
+    F.read_automaton_from_file("Automatas.txt", 40).determinize_and_complete().display_complete_deterministic_automaton()
 
     return
 

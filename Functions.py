@@ -35,14 +35,17 @@ class Automaton:
         return True
 
     def is_complete(self):
-        """
-        A deterministic FA is complete if every state has exactly
-        one outgoing transition for every symbol in the alphabet.
-        Entry : Object of type Automaton
-        Exit : Boolean
-        """
+        # On récupère la liste de tous les états réellement présents dans l'automate
+        # (ceux qui ont des transitions sortantes ou qui sont définis à la création)
+        all_states = set()
+        for state_label, _ in self.transitions.keys():
+            all_states.add(state_label)
 
-        for state in range(self.nb_states):
+        # On vérifie aussi les états initiaux et terminaux au cas où ils n'auraient pas de transitions
+        all_states.update(self.initial_states)
+        all_states.update(self.terminal_states)
+
+        for state in all_states:
             for symbol in self.alphabet:
                 if (state, symbol) not in self.transitions or not self.transitions[(state, symbol)]:
                     print(f"Not complete: state {state} lacks a transition for '{symbol}'.")
@@ -75,100 +78,193 @@ class Automaton:
         print("The automaton is standard.")
         return True
 
-    def determinize_and_complete(self):
-        """ The goal is to create a deterministic and complete version of a given automaton.
-        For this we first check if it is deterministic.
-        After this we create the initial state.
-        Then we create all new states and transitions necessary for it to be deterinistic.
-        We complete it and specify which states are terminal states.
-        And finally we create the new Automaton and return it.
 
-        Entry : Automaton
-        Exit : Automaton"""
+    def standardize(self):
+        # Check if it's already standard
+        is_already_standard = True
+        if len(self.initial_states) != 1:  # case where there is multiple entry state
+            is_already_standard = False
+        else:
+            # Check if any transition points to the single initial state
+            initial_state = list(self.initial_states)[0]
+            for source in self.transitions:
+                for label in self.transitions[source]:
+                    if initial_state in self.transitions[source][label]:
+                        is_already_standard = False
+                        break
 
-        if self.is_deterministic():
-            print("Error : Automaton is already deterministic.")
+        if is_already_standard:
+            return self  # No changes needed
+
+        # Create a new unique initial state (e.g., 'S') that regroups every initial states
+        new_start = "S"
+
+        # Inherit transitions from all old initial states
+        # If old initial states had: q0 --a--> q1, then new state gets: S --a--> q1
+        new_transitions = {}
+        for init_state in self.initial_states:
+            if init_state in self.transitions:
+                for label, targets in self.transitions[init_state].items():
+                    if label not in new_transitions:
+                        new_transitions[label] = set()
+                    new_transitions[label].update(targets)
+
+        # Add these transitions to the automaton for the new state
+        self.transitions[new_start] = new_transitions
+
+        # Handle terminal status
+        # If any original initial state was terminal, the new start state is also terminal
+        for init_state in self.initial_states:
+            if init_state in self.terminal_states:
+                self.terminal_states.add(new_start)
+                break
+
+        # Update initial states to ONLY be the new start state
+        self.initial_states = {new_start}
+
+        return self
+
+
+    def complete(self):
+        if self.is_complete():
             return self
 
-        # 1. Creation of the new initial state
-        initial_labels = self.initial_states
-        initial_labels.sort()           #to prevent 1-3 != 3-1
+        new_transitions = self.transitions.copy()
+        sink_state = "P"
+        sink_needed = False
 
-        start_label = ""
-        for i in range(len(initial_labels)):
-            start_label += str(initial_labels[i])
-            if i < len(initial_labels) - 1:
-                start_label += "-"
+        for state in range(self.nb_states):
+            for symbol in self.alphabet:
+                if (state, symbol) not in new_transitions or not new_transitions[(state, symbol)]:
+                    new_transitions[(state, symbol)] = [sink_state]
+                    sink_needed = True
 
-        # Structure of the new automaton
-        new_states_list = [start_label]  # each time we see a new state we put it in this list
-        new_states_composition = {start_label: initial_labels} # aggregation of labels to form a unique state : list of the corresponding labels constituing the new state
+        if sink_needed:
+            for symbol in self.alphabet:
+                new_transitions[(sink_state, symbol)] = [sink_state]
+
+            return Automaton(self.alphabet_size, self.nb_states + 1, self.initial_states, self.terminal_states,
+                             new_transitions)
+        return self
+
+
+    def determinize(self):
+        if self.is_deterministic():
+            return self
+
+        initial_labels = sorted(self.initial_states)
+        start_label = "-".join(map(str, initial_labels)) if initial_labels else "P"
+
+        new_states_list = [start_label]
+        new_states_composition = {start_label: initial_labels}
         new_transitions = {}
         new_terminals = []
 
-        # 2. Main loop to create the transitions
         idx = 0
         while idx < len(new_states_list):
             current_label = new_states_list[idx]
             current_composition = new_states_composition[current_label]
             idx += 1
 
-            for symbol in self.alphabet:
-                targets_found = []      #reinitialise the list
+            if any(s in self.terminal_states for s in current_composition):
+                if current_label not in new_terminals:
+                    new_terminals.append(current_label)
 
-                # For each original state we search for their targets and we deduce the new target for the new state
+            for symbol in self.alphabet:
+                targets_found = set()
                 for state in current_composition:
                     if (state, symbol) in self.transitions:
-                        potential_targets = self.transitions[(state, symbol)]
+                        targets_found.update(self.transitions[(state, symbol)])
 
-                        for t in potential_targets:
-                            if t not in targets_found:
-                                targets_found.append(t)
-
-                # Sorting of the new target
-                targets_found.sort()
-
-                # Completing the table with the bin state P
-                if len(targets_found) == 0:
+                sorted_targets = sorted(list(targets_found))
+                if not sorted_targets:
                     target_label = "P"
-
-                #Creating the new state used as target
                 else:
-                    target_label = ""
-                    for i in range(len(targets_found)):
-                        target_label += str(targets_found[i])
-                        if i < len(targets_found) - 1:
-                            target_label += "-"
+                    target_label = "-".join(map(str, sorted_targets))
 
-                # Saving the new transition
                 new_transitions[(current_label, symbol)] = [target_label]
 
-                # If it's a new state we add it in the new state list
                 if target_label not in new_states_list:
                     new_states_list.append(target_label)
-                    new_states_composition[target_label] = targets_found
+                    new_states_composition[target_label] = sorted_targets
 
-        # 3. Identification of a new state
-        for label in new_states_list:
-            composition = new_states_composition[label]
-            is_terminal = False
-            for s in composition:
-                if s in self.terminal_states:
-                    is_terminal = True
-                    break
-            if is_terminal:
-                new_terminals.append(label)
+        return Automaton(self.alphabet_size, len(new_states_list), [start_label], new_terminals, new_transitions)
 
-        # 4. Creation of the new automaton
-        new_automaton = Automaton(
-            self.alphabet_size,
-            len(new_states_list),
-            [start_label],
-            new_terminals,
-            new_transitions
-        )
-        # Si besoin de récuperer les states il faudra rajouter un attribut new_states_composition
-        return new_automaton
+
+
+    def determinize_and_complete(self):
+        """
+        Implementation according to the project PDF's pseudo-code logic.
+        """
+        if is_automaton(self):
+            if self.is_deterministic():
+                print("Automaton is already deterministic.")
+                if self.is_complete():
+                    print("Automaton is already complete.")
+                    cdfa = self
+                else:
+                    print("Automaton is not complete. Completing...")
+                    cdfa = self.complete()
+            else:
+                print("Automaton is not deterministic. Determinizing and completing...")
+                # Note: determinize() handles the creation of the P state if targets are empty,
+                # which technically completes it during the process.
+                cdfa = self.determinize()
+                if not cdfa.is_complete():
+                    cdfa = cdfa.complete()
+
+            return cdfa
+        else:
+            print("The object is not an automaton.")
+            return None
+
+
+    def display_complete_deterministic_automaton(self):
+            """
+            Displays the CDFA and explicitly shows the composition of the states
+            in terms of the original automaton states.
+            Entry : Automaton
+            Exit : None
+            """
+            col_width = 15
+
+            print("\n--- Complete Deterministic Automaton (CDFA) ---")
+
+            # Header for symbols [cite: 32, 160]
+            header = f"{'State (Composition)':<{col_width * 1.5}}"
+            for sym in self.alphabet:
+                header += f"{sym:<{col_width}}"
+            print(header)
+            print("-" * len(header))
+
+            # We iterate through all states present in the transitions or labels
+            all_states = sorted(
+                list(set([k[0] for k in self.transitions.keys()] + self.initial_states + self.terminal_states)))
+
+            for state in all_states:
+                # Mark Initial (->) and Terminal (<-)
+                prefix = ""
+                if state in self.initial_states: prefix += "->"
+                if state in self.terminal_states: prefix += "<-"
+
+                state_display = f"{prefix}{state}"
+                row = f"{state_display:<{col_width * 1.5}}"
+
+                for sym in self.alphabet:
+                    targets = self.transitions.get((state, sym), [])
+                    cell = ", ".join(map(str, targets)) if targets else "--"
+                    row += f"{cell:<{col_width}}"
+
+                print(row)
+
+            print("-" * len(header))
+            print("Note: State names (e.g., '0-1') indicate the set of original states they represent.\n")
+
+
+
+
+
+
 
 
 
@@ -179,6 +275,12 @@ class Automaton:
 
 
 # start functions
+
+def is_automaton(object):
+    if type(object) == Automaton:
+        return True
+    return False
+
 
 def read_automaton_from_file(filename, target_id):
     """
@@ -241,50 +343,6 @@ def read_automaton_from_file(filename, target_id):
     return Automaton(alphabet_size, nb_states, initial_states, terminal_states, transitions)
 
 
-def standardize(automaton):
-    #Check if it's already standard
-    is_already_standard = True
-    if len(automaton.initial_states) != 1: #case where there is multiple entry state
-        is_already_standard = False
-    else:
-        # Check if any transition points to the single initial state
-        initial_state = list(automaton.initial_states)[0]
-        for source in automaton.transitions:
-            for label in automaton.transitions[source]:
-                if initial_state in automaton.transitions[source][label]:
-                    is_already_standard = False
-                    break
-
-    if is_already_standard:
-        return automaton  # No changes needed
-
-    # Create a new unique initial state (e.g., 'S') that regroups every initial states
-    new_start = "S"
-
-    # Inherit transitions from all old initial states
-    # If old initial states had: q0 --a--> q1, then new state gets: S --a--> q1
-    new_transitions = {}
-    for init_state in automaton.initial_states:
-        if init_state in automaton.transitions:
-            for label, targets in automaton.transitions[init_state].items():
-                if label not in new_transitions:
-                    new_transitions[label] = set()
-                new_transitions[label].update(targets)
-
-    # Add these transitions to the automaton for the new state
-    automaton.transitions[new_start] = new_transitions
-
-    # Handle terminal status
-    # If any original initial state was terminal, the new start state is also terminal
-    for init_state in automaton.initial_states:
-        if init_state in automaton.terminal_states:
-            automaton.terminal_states.add(new_start)
-            break
-
-    # Update initial states to ONLY be the new start state
-    automaton.initial_states = {new_start}
-
-    return automaton
 
 def display_Automatoon(FA):
     alphabet_liste = list(string.ascii_lowercase)
@@ -366,3 +424,10 @@ def word_recognition_loop(A):
 
 
 #end functions
+
+
+
+
+
+
+
