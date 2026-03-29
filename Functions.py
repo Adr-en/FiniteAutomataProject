@@ -38,13 +38,10 @@ class Automaton:
         return True
 
     def is_complete(self):
-        # On récupère la liste de tous les états réellement présents dans l'automate
-        # (ceux qui ont des transitions sortantes ou qui sont définis à la création)
         all_states = set()
         for state_label, _ in self.transitions.keys():
             all_states.add(state_label)
 
-        # On vérifie aussi les états initiaux et terminaux au cas où ils n'auraient pas de transitions
         all_states.update(self.initial_states)
         all_states.update(self.terminal_states)
 
@@ -119,7 +116,7 @@ class Automaton:
         if self.is_deterministic():
             return self
 
-        # 1. Creation of the new initial state
+        # Creation of the new initial state
         initial_labels = self.epsilon_check(self.initial_states)
         initial_labels.sort()           #to prevent 1-3 != 3-1
 
@@ -135,7 +132,7 @@ class Automaton:
         new_transitions = {}
         new_terminals = []
 
-        # 2. Main loop to create the transitions
+        # Main loop to create the transitions
         idx = 0
         while idx < len(new_states_list):
             current_label = new_states_list[idx]
@@ -178,7 +175,7 @@ class Automaton:
                     new_states_list.append(target_label)
                     new_states_composition[target_label] = targets_found
 
-        # 3. Identification of a new state
+        # Identification of a new state
         for label in new_states_list:
             composition = new_states_composition[label]
             is_terminal = False
@@ -189,7 +186,7 @@ class Automaton:
             if is_terminal:
                 new_terminals.append(label)
 
-        # 4. Creation of the new automaton
+        # Creation of the new automaton
         new_automaton = Automaton(
             len([s for s in self.alphabet if s != 'e']),
             len(new_states_list),
@@ -197,7 +194,7 @@ class Automaton:
             new_terminals,
             new_transitions
         )
-        # Si besoin de récuperer les states il faudra rajouter un attribut new_states_composition
+
         return new_automaton
 
 
@@ -304,7 +301,6 @@ def read_automaton_from_file(filename, target_id):
                 sym = char  # C'est notre 'a', 'b', etc.
                 found_sym = True
 
-        # Conversion en entiers et stockage
         src, tgt = int(src_str), int(tgt_str)
 
         if (src, sym) not in transitions:

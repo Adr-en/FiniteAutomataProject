@@ -38,10 +38,10 @@ def main():
             mcdfa = F.minimize(cdfa)
             mcdfa.display_minimal_automaton()
 
-            #print(f"Test : read word on the minimized automata")
-            #F.word_recognition_loop(mcdfa)
+            print(f"Test : read word on the minimized automata")
+            F.word_recognition_loop(mcdfa)
 
-            #print("That's all for this automaton\n")
+            print("That's all for this automaton\n")
 
 
 
