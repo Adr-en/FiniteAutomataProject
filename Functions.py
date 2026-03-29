@@ -319,6 +319,50 @@ def display_Automatoon(FA):
     return
 
 
+#part 6 : word recognition 
+def read_word():
+    #Asks user to enter a word and stores the string in memory
+    word = input("Enter a word to test or 'end' to stop: ")
+    return word
+
+def recognize_word(word, A):
+    #Verifies if the automaton A recognizes the input word.
+    #Uses a tuple (state, symbol) defined in the Automaton class
+   
+    # Initialize the current states with the automaton's initial states
+    current_states = set(A.initial_states)
+    
+    # Process the word character by character
+    for char in word:
+        next_states = set()
+        for state in current_states:
+            # Checks the tuple to find the next states
+            if (state, char) in A.transitions:
+                # Add all valid target states to our next step
+                next_states.update(A.transitions[(state, char)])
+        
+        current_states = next_states
+        
+        # Optimization: If no states are active, the word cannot be recognized
+        if not current_states:
+            break
+
+    # Determine if any of the active states are in the terminal_states list
+    is_recognized = any(state in A.terminal_states for state in current_states)
+    
+    if is_recognized:
+        print("Yes")
+    else:
+        print("No")
+
+def word_recognition_loop(A):
+    #creates a loop to enter multiple words and test them on the automaton A until the user types "end".
+
+    word = read_word() 
+    
+    while word != "end": 
+        recognize_word(word, A) 
+        word = read_word()
 
 
 #end functions
