@@ -1,5 +1,6 @@
-
+import string
 #start class
+
 class Automaton:
     def __init__(self, alphabet_size, nb_states, initial_states, terminal_states, transitions):
         self.alphabet_size = alphabet_size  # Number of symbols in the alphabet
@@ -284,7 +285,37 @@ def standardize(automaton):
     automaton.initial_states = {new_start}
 
     return automaton
-    
+
+def display_Automatoon(FA):
+    alphabet_liste = list(string.ascii_lowercase)
+    col_width = 10  # We define a width of 10 to align properly the columns
+
+    #We align with < to the left
+    print(f"{'':<16}", end="")
+    for i in range(FA.alphabet_size):
+        print(f"{alphabet_liste[i]:<{col_width}}", end="")
+    print()
+
+    for i in range(FA.nb_states):
+        prefix = ""
+        if i in FA.initial_states: prefix += "->"
+        if i in FA.terminal_states: prefix += "<-"
+
+        # On aligne le début de ligne sur 8 caractères
+        print(f"{prefix:<8}", end="")
+        print(f"{str(i):<8}", end="")
+
+        for j in range(FA.alphabet_size):
+            sym = alphabet_liste[j]
+            targets = FA.transitions.get((i, sym), [])
+
+            # On prépare le texte de la cellule
+            cell = ", ".join(map(str, targets)) if targets else "--"
+
+            # On l'affiche avec la largeur fixe de 10
+            print(f"{cell:<{col_width}}", end="")
+
+        print()
 
 
 
