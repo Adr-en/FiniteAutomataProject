@@ -316,6 +316,7 @@ def display_Automatoon(FA):
             print(f"{cell:<{col_width}}", end="")
 
         print()
+    return
 
 
 
